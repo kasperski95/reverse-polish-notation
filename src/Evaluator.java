@@ -1,13 +1,16 @@
 import java.util.Stack;
 
-public class RpnCalculator {
+public class Evaluator {
+	
+	public static Double evalInfix( String[] exp ) {
+		return evalPostfix( Converter.infixToPostfix( exp ) );
+	}
+	
 	
 	/**
-	 * @param args: RPN expression to evaluate
+	 * @param exp: postfix (RPN) expression to evaluate
 	 */
-	public static void main( String[] _exp ) {
-		String[] exp = {"4", "2", "/", "2", "+", "2", "^"};
-		
+	public static Double evalPostfix( String[] exp ) {		
 		Stack<Double> stack = new Stack<>();
 		for ( int i = 0; i < exp.length; ++i ) {
 			if ( Operator.isOperator( exp[i] ) ) {
@@ -16,9 +19,6 @@ public class RpnCalculator {
 				stack.push( Double.valueOf( exp[i] ) );
 			}
 		}
-		System.out.println( stack.pop() );
-		
-		
+		return stack.pop();
 	}
-
 }
