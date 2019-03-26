@@ -3,10 +3,16 @@ import java.util.Arrays;
 
 
 public class Test {
+	private static Integer nTests;
+	private static Integer nErrors;
+	
+	
 	private static Boolean test(String name, Boolean cond) {
+		++nTests;
 		if (cond) {
 			System.out.println( "[PASS] " + name );
 		} else {
+			++nErrors;
 			System.out.println( "[FAIL] " + name );
 			System.out.print  ( "       " );
 		}
@@ -15,10 +21,12 @@ public class Test {
 	
 	
 	public static void main(String[] args) {
+		nTests = 0;
+		nErrors = 0;
 		{
 			String[] infix = { "(", "2", "+", "3", ")", "*", "2", "^", "2", "-", "14", "/", "7" };
 			String[] postfix = { "2", "3", "+", "2", "2", "^", "*", "14", "7", "/", "-" };
-			if (! test( "Converter.infixToPostfix", Converter.infixToPostfix( infix ).equals( postfix ) ) ) {
+			if (! test( "Converter.infixToPostfix", Arrays.toString( Converter.infixToPostfix( infix ) ).equals( Arrays.toString( postfix ) ) ) ) {
 				System.out.println( Arrays.toString( Converter.infixToPostfix( infix ) ) );
 			}
 		}{
@@ -29,7 +37,8 @@ public class Test {
 			}
 		}
 		
-		System.out.println( "Reached end of the test." );
+		System.out.println( "-------------------------------------------- ");
+		System.out.println( "PASSED: " + (nTests - nErrors) + "/" + nTests );
 	}
 
 }

@@ -3,18 +3,18 @@ import java.util.Stack;
 
 
 public class Operator {	
-	public static Boolean isOperator( String symbol ) {
+	public static OperatorDefinition getPropertiesOf( String symbol ) {
 		for ( int i = 0; i < operators.length; ++i ) {
-			if ( operators[i].symbol.equals( symbol ) )
-				return true;
+			if ( operators[i].symbol().equals( symbol ) )
+				return operators[i];
 		}
-		return false;
+		return null;
 	}
 	
 	
 	public static Double execute( String symbol, Stack<Double> stack ) {
 		for ( int i = 0; i < operators.length; ++i ) {
-			if ( operators[i].symbol.equals( symbol ) ) {
+			if ( operators[i].symbol().equals( symbol ) ) {
 				return operators[i].execute.call(stack);
 			}
 		}
@@ -40,7 +40,9 @@ public class Operator {
 		new OperatorDefinition( "-", 2, 2, false, (Stack<Double> stack) -> {
 			Double tmp = stack.pop();
 			return stack.pop() - tmp;
-		}) 
+		}),
+		new OperatorDefinition( "(", -1, -1, false, null),
+		new OperatorDefinition( ")", -1, -1, false, null)
 	};
 	
 	
@@ -56,12 +58,6 @@ interface OperatorExecutable {
 
 
 class OperatorDefinition {
-	public String symbol;
-	public Integer precedence;
-	public Integer nOfArgs;
-	public Boolean leftAssociativity;
-	public OperatorExecutable execute;
-	
 	OperatorDefinition (
 			String symbolToSet,
 			Integer precedenceToSet,
@@ -75,6 +71,19 @@ class OperatorDefinition {
 		nOfArgs = nOfArgsToSet;
 		execute = executeToSet;
 	}
+	
+	public OperatorExecutable execute;
+	public String symbol() {return symbol;}
+	public Integer precedence() {return precedence;}
+	public Integer nOfArgs() {return nOfArgs;}
+	public Boolean leftAssociativity() {return leftAssociativity;}
+	
+	//--------------------------------------------------------------
+	
+	private String symbol;
+	private Integer precedence;
+	private Integer nOfArgs;
+	private Boolean leftAssociativity;
 }
 
 
